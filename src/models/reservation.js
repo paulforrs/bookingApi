@@ -8,8 +8,18 @@ const reservationSchema  = new Schema({
         //     type: Number
         // },
         guest:{
-            firstName: String,
-            lastName: String,
+            guestId:{
+                type: Schema.Types.ObjectId,
+                require:true
+            },
+            firstName: {
+                type: String,
+                require: true
+            },
+            lastName:{
+                type: String,
+                require: true
+            }
         },
         checkInDate:{
             type: Date,
@@ -20,6 +30,15 @@ const reservationSchema  = new Schema({
             require:true
         },
         numOfGuest:{
+            adult: {
+                type: Number,
+                require: true
+            },
+            children: {
+                type: Number
+            }
+        },
+        totalCost:{
             type: Number,
             require: true
         },
@@ -28,18 +47,34 @@ const reservationSchema  = new Schema({
             require: true
         },
         status:{
-            type: String
-        }
+            type: String,
+            default: ""
+        },
+        note: String
     },
     {
     timestamps: true
     }
 )
 // reservationSchema.pre("validate")
-reservationSchema.pre('save', async function(){
-    const guest = new Guest(this.guest)
-    guest.reservations.push(this._id)
-    await guest.save()
+reservationSchema.pre('save', async function(next){
+    const newGuest = new Guest(this.guest)
+    const guest = await Guest.findOne({"firstName": newGuest.firstName})
+    // if guest already exist 
+    if(!guest || !(guest.lastName === newGuest.lastName)){
+        newGuest.reservations.push(this.id)
+        await newGuest.save()
+        this.guest.guestId = newGuest._id
+        next()
+        
+    }else{
+        // reservation guest is existing guest
+        this.guest.guestId = guest
+        guest.reservations.push(this._id)
+        await  guest.save()
+        next()
+    }
+
 })
 
 
