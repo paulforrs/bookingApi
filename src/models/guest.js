@@ -6,11 +6,13 @@ const Schema = mongoose.Schema
 const guestSchema = new Schema({
     firstName:{
         type: String,
-        trim: true
+        trim: true,
+        require: true
     },
     lastName:{
         type: String,
-        trim:true
+        trim:true,
+        require:true
     },
     email:{
         type: String,
