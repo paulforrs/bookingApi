@@ -17,16 +17,19 @@ router.get('/api/reservations',async (req,res)=>{
 })
 router.post('/api/reservations/new', async (req,res)=>{
     try{
-        const {guest,numOfGuest,numOfRooms} = req.body
+        const {guest,numOfGuest,numOfRooms,totalCost} = req.body
         const checkInDate = new Date()
         const checkOutDate = new Date("October 13, 2025 11:13:00")
+
         const reservation = new Reservation({
             guest,
-            numOfRooms,
             numOfGuest,
-            checkInDate,
-            checkOutDate
+            numOfRooms,
+            totalCost,
+            checkOutDate,
+            checkInDate
         })
+
         
         await reservation.save()
         res.send(reservation)

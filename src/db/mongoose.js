@@ -9,5 +9,5 @@ database = "test"
 const MONGODB_PASS = process.env.MONGODB_PASS
 const url = `mongodb+srv://admin_user:${MONGODB_PASS}@basiliaguesthouse.klhinvw.mongodb.net/${database}?retryWrites=true&w=majority`
 mongoose.connect(url,{})
-.then(()=>{console.log("mongoose connected")})
+.then(()=>{})
 .catch((error)=>console.log(error))

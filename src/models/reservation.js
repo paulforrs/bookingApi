@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const Schema = mongoose.Schema
 const Guest = require('./guest')
+const { default: isEmail } = require("validator/lib/isEmail")
 
 const reservationSchema  = new Schema({
         // guestId:{
@@ -19,6 +20,14 @@ const reservationSchema  = new Schema({
             lastName:{
                 type: String,
                 require: true
+            },
+            email:{
+                type: String,
+                required: true,
+                trim: true,
+                unique: true,
+                lowercase: true,
+                validate:[isEmail, "Please enter a valid email"]
             }
         },
         checkInDate:{
@@ -59,14 +68,14 @@ const reservationSchema  = new Schema({
 // reservationSchema.pre("validate")
 reservationSchema.pre('save', async function(next){
     const newGuest = new Guest(this.guest)
-    const guest = await Guest.findOne({"firstName": newGuest.firstName})
+    const guest = await Guest.findOne({firstName: newGuest.email})
+    console.log(guest);
     // if guest already exist 
     if(!guest || !(guest.lastName === newGuest.lastName)){
         newGuest.reservations.push(this.id)
         await newGuest.save()
         this.guest.guestId = newGuest._id
         next()
-        
     }else{
         // reservation guest is existing guest
         this.guest.guestId = guest

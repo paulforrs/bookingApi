@@ -1,7 +1,9 @@
 const Reservation = require('../src/models/reservation');
 const assert = require('assert');
 const { faker } = require('@faker-js/faker');
-jest.useFakeTimers()
+const app = require("../src/index")
+const request = require('supertest');
+const { ObjectId } = require('mongodb');
 
 describe('Reservation Test', ()=>{
     let reservation
@@ -21,10 +23,22 @@ describe('Reservation Test', ()=>{
     afterAll(()=>{
         reservation = null
     })
-    
 
-    test("must save reservation",async ()=>{ 
-        console.log(await reservation.save())
-    },60000)
+        
+    it('GET /guests --> array of guests',()=>{
+        return request(app).get('/api/reservations')
+        .expect("Content-Type",/json/)
+        .expect(200)
+        // .then((res)=>{
+        //     expect(res.body).toEqual(
+        //         expect.objectContaining({
+        //             guest: expect.any(String)
+        //         })
+        //     )
+        //     })
+        })
+    it('GET /guest/id --> specific guest by ID',()=>{
+
+    })
 
 })
