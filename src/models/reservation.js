@@ -4,10 +4,9 @@ const Schema = mongoose.Schema
 const Guest = require('./guest')
 const { default: isEmail } = require("validator/lib/isEmail")
 
+// object shape
+
 const reservationSchema  = new Schema({
-        // guestId:{
-        //     type: Number
-        // },
         guest:{
             guestId:{
                 type: Schema.Types.ObjectId,
@@ -38,20 +37,19 @@ const reservationSchema  = new Schema({
             type: Date,
             require:true
         },
-        numOfGuest:{
-            adult: {
-                type: Number,
-                require: true
-            },
-            children: {
-                type: Number
-            }
-        },
+        roomDetails:[
+            {roomType: String,
+            numberOfGuests: {
+                adult: {
+                    type: Number,
+                    require: true
+                },
+                children: {
+                    type: Number
+                }
+            } }
+        ],
         totalCost:{
-            type: Number,
-            require: true
-        },
-        numOfRooms:{
             type: Number,
             require: true
         },
