@@ -1,7 +1,6 @@
 const express = require('express')
 const router = new express.Router()
 const User = require('../models/user')
-const { MongoGridFSChunkError } = require('mongodb')
 
 router.post('/api/signup', async(req, res)=>{
     try{

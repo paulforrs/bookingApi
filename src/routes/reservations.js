@@ -1,8 +1,6 @@
 const express = require('express')
 const router = new express.Router
 const Reservation = require('../models/reservation')
-const guestRouter = require('../routes/guests')
-const Guest = require('../models/guest')
 
 router.get('/api/reservations',async (req,res)=>{
     try{
