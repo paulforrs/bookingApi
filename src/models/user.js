@@ -13,21 +13,18 @@ const userSchema = new Schema({
         lowercase: true,
         validate:[isEmail, "Please enter a valid email"]
     },
-    password:{
-        type: String,
-        required: true,
-        unique: true,
-        minlength:[ 6, "Minimum passsword length is 6 characters"]
-    },
+    jti: String,
+    exp: Number,
+    nbf: Number,
+    iat: Number,
     name:{
         type: String
     },
     isAdmin:{
         type: Boolean,
         require: true
-    },
-    token:String,
-    tokenExpiration: Date
+    }
+
 })
 // password hashing
 userSchema.pre('save', async function (next) {

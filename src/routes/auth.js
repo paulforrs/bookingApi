@@ -15,16 +15,16 @@ router.post('/api/signup', async(req, res)=>{
 
 })
 
-router.post('/api/signin', async(req, res)=>{
+router.patch('/api/signin', async(req, res)=>{
     try{
-        const {email, password} = req.body
-        const user = await User.findOne({email})
+        const {email} = req.body
+        const user = await User.findOneAndUpdate({"email":email}, req.body,{new: true,upsert: true})
 
-        if(!user || !(await user.comparePassword(password))){
-            return res.status(401).json({ error: 'Invalid username or password' });
-        }
-    
-        res.status(200).send({message: "Login Successfull"})
+        // if(!user || !(await user.comparePassword(password))){
+        //     return res.status(401).json({ error: 'Invalid username or password' });
+        // }
+        console.log(user)
+        res.status(400).send(user)
     }
     catch(err){
         res.send(err)
