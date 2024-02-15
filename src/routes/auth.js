@@ -23,7 +23,7 @@ router.patch('/api/signin', async(req, res)=>{
         //     return res.status(401).json({ error: 'Invalid username or password' });
         // }
         console.log(user)
-        res.status(400).send(user)
+        res.status(200).send(user)
     }
     catch(err){
         res.send(err)
