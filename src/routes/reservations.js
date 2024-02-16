@@ -2,6 +2,7 @@ const express = require('express')
 const router = new express.Router
 const Reservation = require('../models/reservation')
 
+// get all reservations
 router.get('/api/reservations',async (req,res)=>{
     try{
         Reservation.find({})
@@ -13,22 +14,12 @@ router.get('/api/reservations',async (req,res)=>{
         res.send(err)
     }
 })
+// add new reservation
 router.post('/api/reservations/new', async (req,res)=>{
     try{
-        const {guest,numOfGuest,numOfRooms,totalCost} = req.body
-        const checkInDate = new Date()
-        const checkOutDate = new Date("October 13, 2025 11:13:00")
-
-        const reservation = new Reservation({
-            guest,
-            numOfGuest,
-            numOfRooms,
-            totalCost,
-            checkOutDate,
-            checkInDate
-        })
-
-        
+        const reservation = new Reservation(
+            req.body
+        )
         await reservation.save()
         res.send(reservation)
     }
@@ -36,6 +27,7 @@ router.post('/api/reservations/new', async (req,res)=>{
         res.send(err)
     }
 })
+// updates reservations
 router.patch('/api/reservations/:id', async (req, res)=>{
     try{
         console.log(req.params.id)
@@ -49,6 +41,7 @@ router.patch('/api/reservations/:id', async (req, res)=>{
         res.send(err)
     }
 })
+// deleting reservations
 router.delete('/api/reservations/:id', async (req, res)=>{
     try{
         const reservation = await Reservation.findByIdAndDelete(req.params.id)
