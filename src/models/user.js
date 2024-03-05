@@ -27,37 +27,37 @@ const userSchema = new Schema({
 
 })
 // password hashing
-userSchema.pre('save', async function (next) {
-    const user = this;
+// userSchema.pre('save', async function (next) {
+//     const user = this;
   
-    // Check if the password is modified or new
-    if (!user.isModified('password')) return next();
+//     // Check if the password is modified or new
+//     if (!user.isModified('password')) return next();
   
-    try {
-      // Generate a salt
-      const salt = await bcrypt.genSalt(10);
+//     try {
+//       // Generate a salt
+//       const salt = await bcrypt.genSalt(10);
   
-      // Hash the password with the generated salt
-      const hashedPassword = await bcrypt.hash(user.password, salt);
+//       // Hash the password with the generated salt
+//       const hashedPassword = await bcrypt.hash(user.password, salt);
   
-      // Replace the plain password with the hashed one
-      user.password = hashedPassword;
-      next();
-    } catch (error) {
-      return next(error);
-    }
-  });
+//       // Replace the plain password with the hashed one
+//       user.password = hashedPassword;
+//       next();
+//     } catch (error) {
+//       return next(error);
+//     }
+//   });
 
 // Method to compare passwords during login
-userSchema.methods.comparePassword = async function (userPassword) {
-    try {
-      // Compare the provided password with the hashed password
-      console.log('compared pass')
-      return await bcrypt.compare(userPassword, this.password);
-    } catch (error) {
-      throw error;
-    }
-  };
+// userSchema.methods.comparePassword = async function (userPassword) {
+//     try {
+//       // Compare the provided password with the hashed password
+//       console.log('compared pass')
+//       return await bcrypt.compare(userPassword, this.password);
+//     } catch (error) {
+//       throw error;
+//     }
+//   };
 // create Token
 userSchema.methods.createToken = async function(){
     

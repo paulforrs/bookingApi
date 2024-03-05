@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const Guest = require('./guest')
 const { default: isEmail } = require("validator/lib/isEmail")
 
+
 // object shape
 
 const reservationSchema  = new Schema({
@@ -45,6 +46,9 @@ const reservationSchema  = new Schema({
                     require: true
                 },
                 children: {
+                    type: Number
+                },
+                pets:{
                     type: Number
                 }
             } }

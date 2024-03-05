@@ -1,9 +1,10 @@
 const express = require('express')
 const router = new express.Router
 const Reservation = require('../models/reservation')
+const auth = require("../middleware/auth")
 
 // get all reservations
-router.get('/api/reservations',async (req,res)=>{
+router.get('/api/reservations',auth, async (req,res)=>{
     try{
         Reservation.find({})
         .then((response)=>{
