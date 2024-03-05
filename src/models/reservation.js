@@ -59,7 +59,8 @@ const reservationSchema  = new Schema({
         },
         status:{
             type: String,
-            default: ""
+            default: "",
+            required: true
         },
         note: String
     },
@@ -71,7 +72,11 @@ const reservationSchema  = new Schema({
 reservationSchema.pre('save', async function(next){
     const newGuest = new Guest(this.guest)
     const guest = await Guest.findOne({firstName: newGuest.email})
-    console.log(guest);
+    const dateNow = (new Date()).toDateString()
+    const dateNowTime = (new Date(dateNow)).getTime()
+    const checkInDateTime = (new Date(this.checkInDate)).getTime()
+    const checkOutDateTime = (new Date(this.checkOutDate)).getTime()
+    console.log(checkInDateTime, dateNowTime)
     // if guest already exist 
     if(!guest || !(guest.lastName === newGuest.lastName)){
         newGuest.reservations.push(this.id)
@@ -84,6 +89,12 @@ reservationSchema.pre('save', async function(next){
         guest.reservations.push(this._id)
         await  guest.save()
         next()
+    }
+    if(dateNowTime < checkInDateTime){
+        this.status = "Upcoming"
+    }
+    else if(dateNowTime >= checkInDateTime && dateNowTime < checkOutDateTime){
+        this.status = "Currently Hosting"
     }
 
 })

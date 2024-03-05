@@ -31,7 +31,6 @@ router.post('/api/reservations/new', async (req,res)=>{
 // updates reservations
 router.patch('/api/reservations/:id', async (req, res)=>{
     try{
-        console.log(req.params.id)
         const reservation = await Reservation.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true})
         if(!reservation){
             return res.status(404).send("Reservation not Found")
@@ -40,6 +39,17 @@ router.patch('/api/reservations/:id', async (req, res)=>{
     }
     catch(err){
         res.send(err)
+    }
+})
+// updates all resevation status
+router.get('/api/reservations/sync', async(req, res)=>{
+    const dateNowTime =new Date((new Date()).toDateString()).getTime()
+    try {
+        const past = await Reservation.updateMany({checkOutDate: {$lt: dateNowTime }},{status: "Past Guest"})
+        // const current = await Reservation
+        res.send(past)
+    } catch (error) {
+        
     }
 })
 // deleting reservations
